@@ -201,7 +201,7 @@ docker.build: build ## Build the docker image
 
 docker.push:
 	@$(INFO) docker push
-	@docker build --push -t $(IMAGE_REGISTRY):$(VERSION)
+	@docker build --push -t $(IMAGE_REGISTRY):$(VERSION) .
 	@$(OK) docker push
 
 # RELEASE_TAG is tag to promote. Default is promooting to main branch, but can be overriden
