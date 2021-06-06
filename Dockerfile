@@ -1,6 +1,11 @@
+FROM golang:1.16.3 AS build
+WORKDIR /go/src/app
+COPY . .
+RUN make
+
 FROM alpine:3.13
 
-COPY bin/external-secrets /bin/external-secrets
+COPY --from=build /go/src/app/external-secrets /bin/external-secrets
 
 # Run as UID for nobody
 USER 65534
