@@ -283,10 +283,11 @@ jobs:
           restore-keys: ${{ runner.os }}-pkg-
 
       - name: Build Artifacts
+        if: "false"
         env:
           # We're using docker buildx, which doesn't actually load the images it
           # builds by default. Specifying --load does so.
-          BUILD_ARGS: "--load --platform=linux/amd64,linux/arm64"
+          BUILD_ARGS: "--load"
         run: make docker.build
 
       - name: Login to Docker
@@ -299,6 +300,10 @@ jobs:
 
       - name: Publish Artifacts
         if: env.GHCR_USERNAME != ''
+        env:
+          # We're using docker buildx, which doesn't actually load the images it
+          # builds by default. Specifying --load does so.
+          BUILD_ARGS: "--load --platform=linux/amd64,linux/arm64"
         run: make docker.push
 
       - name: Promote Artifacts to main release channel

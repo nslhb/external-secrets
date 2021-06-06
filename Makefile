@@ -196,12 +196,12 @@ build.all: docker.build helm.build
 
 docker.build: build ## Build the docker image
 	@$(INFO) docker build
-	@docker build . $(BUILD_ARGS) -t $(IMAGE_REGISTRY):$(VERSION) -t $(IMAGE_REGISTRY):$(SOURCE_TAG)
+	@docker build . $(BUILD_ARGS) -t $(IMAGE_REGISTRY):$(VERSION)
 	@$(OK) docker build
 
 docker.push:
 	@$(INFO) docker push
-	@docker push $(IMAGE_REGISTRY):$(VERSION)
+	@docker build --push $(IMAGE_REGISTRY):$(VERSION)
 	@$(OK) docker push
 
 # RELEASE_TAG is tag to promote. Default is promooting to main branch, but can be overriden
