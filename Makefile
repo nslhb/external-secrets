@@ -11,7 +11,7 @@ MAKEFLAGS     += --warn-undefined-variables
 all: build
 
 # Image registry for build/push image targets
-IMAGE_REGISTRY ?= ghcr.io/external-secrets/external-secrets
+IMAGE_REGISTRY ?= ghcr.io/nslhb/external-secrets
 
 # Produce CRDs that work back to Kubernetes 1.11 (no version conversion)
 CRD_OPTIONS ?= "crd:trivialVersions=true"
@@ -194,15 +194,10 @@ serve-docs:
 
 build.all: docker.build helm.build
 
-docker.build: build ## Build the docker image
+docker.push: build ## Build the docker image
 	@$(INFO) docker build
-	@docker build . $(BUILD_ARGS) -t $(IMAGE_REGISTRY):$(VERSION)
+	@docker buildx build --platform="linux/amd64,linux/arm64" . $(BUILD_ARGS) -t $(IMAGE_REGISTRY):$(VERSION)
 	@$(OK) docker build
-
-docker.push:
-	@$(INFO) docker push
-	@docker push $(IMAGE_REGISTRY):$(VERSION)
-	@$(OK) docker push
 
 # RELEASE_TAG is tag to promote. Default is promooting to main branch, but can be overriden
 # to promote a tag to a specific version.
